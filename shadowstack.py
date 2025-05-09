@@ -52,9 +52,9 @@ while doagain == 1:
             print("----------------------------------------------------------") 
             def bannergrab(rhost, port):
                 try:
-                    # Initialize a socket and connect to the given IP and port
+                    
                     s = socket.socket()
-                    s.settimeout(5)  # Set a 5-second timeout
+                    s.settimeout(5)  
                     s.connect((rhost, int(port)))
                     if port == 80:
                                 s.sendall(b"GET / HTTP/1.1\r\nHost: %s\r\n\r\n" % rhost.encode())
