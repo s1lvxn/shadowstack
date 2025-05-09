@@ -3,6 +3,8 @@ import pyfiglet
 import threading
 from datetime import datetime
 import os
+import ipaddress
+import time
 
 doagain = 1
 while doagain == 1:
@@ -11,7 +13,7 @@ while doagain == 1:
     print(startbanner)
 
     mode = input("Select mode: \n [1] Portscan:\n [2] Banner grabbing\n")
-
+#Port Scan:
     if mode == "1":
             rhost = input("Type IP Address:\n")
             os.system('cls' if os.name == 'nt' else 'clear')
@@ -40,10 +42,9 @@ while doagain == 1:
             again = input("\nDo you want to scan again? (y/n): ").lower()
             if again != "y":
                 doagain = 0
-    
+ #Banner grabbing   
     elif mode == "2":
             rhost = input("Type IP Address:\n")
-            #port = input("Type the Port to scan:\n")
             os.system('cls' if os.name == 'nt' else 'clear')
             print(startbanner)
             print("----------------------------------------------------------") 
@@ -82,6 +83,45 @@ while doagain == 1:
                 thread.join()    
 
                
+            again = input("\nDo you want to scan again? (y/n): ").lower()
+            if again != "y":
+                doagain = 0
+
+    elif mode == "3":
+            os.system('cls' if os.name == 'nt' else 'clear')
+            print(startbanner)
+            subnet = input("Type Subnet (CIDR) \n")
+            addresses = [str(ip) for ip in ipaddress.IPv4Network(subnet)]
+            ports = [22, 25, 80, 443, 3389, 445, 53]
+            
+            def netscan(host):
+                hostisup = False
+                for port in ports:
+                    try:
+                        s = socket.socket()
+                        s.settimeout(3)
+                        s.connect((host, port))
+                        hostisup = True  
+                        break 
+                    except:
+                        pass
+                    finally:
+                        s.close()
+                if hostisup:
+                    print(f"{host} is UP!")
+
+            threads = []
+            for host in addresses:
+                thread = threading.Thread(target=netscan, args=(host,))
+                threads.append(thread)
+                thread.start()
+
+            for thread in threads:
+                thread.join()
+
+            time.sleep(1.5)
+            print("----------------------------------------------------------\n" \
+            f"Scan Finished at: {datetime.now()} \n---------------------------------------------------------- ")
             again = input("\nDo you want to scan again? (y/n): ").lower()
             if again != "y":
                 doagain = 0
