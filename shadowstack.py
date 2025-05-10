@@ -12,7 +12,7 @@ while doagain == 1:
     os.system('cls' if os.name == 'nt' else 'clear')
     print(startbanner)
 
-    mode = input("Select mode: \n [1] Portscan:\n [2] Banner grabbing\n")
+    mode = input("Select mode: \n [1] Portscan:\n [2] Banner grabbing\n [3] Search for Hosts in Subnet\n")
 #Port Scan:
     if mode == "1":
             rhost = input("Type IP Address:\n")
@@ -42,7 +42,7 @@ while doagain == 1:
             again = input("\nDo you want to scan again? (y/n): ").lower()
             if again != "y":
                 doagain = 0
- #Banner grabbing   
+ #Banner grabbin  
     elif mode == "2":
             rhost = input("Type IP Address:\n")
             os.system('cls' if os.name == 'nt' else 'clear')
@@ -86,7 +86,7 @@ while doagain == 1:
             again = input("\nDo you want to scan again? (y/n): ").lower()
             if again != "y":
                 doagain = 0
-
+#Scan subnet
     elif mode == "3":
             os.system('cls' if os.name == 'nt' else 'clear')
             print(startbanner)
@@ -99,7 +99,7 @@ while doagain == 1:
                 for port in ports:
                     try:
                         s = socket.socket()
-                        s.settimeout(3)
+                        s.settimeout(5)
                         s.connect((host, port))
                         hostisup = True  
                         break 
@@ -122,6 +122,8 @@ while doagain == 1:
             time.sleep(1.5)
             print("----------------------------------------------------------\n" \
             f"Scan Finished at: {datetime.now()} \n---------------------------------------------------------- ")
+
+
             again = input("\nDo you want to scan again? (y/n): ").lower()
             if again != "y":
                 doagain = 0
